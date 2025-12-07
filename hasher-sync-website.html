@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasher Sync - Digital Solutions & Automation Agency</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg-light: #F9FAFB;
+            --color-bg-dark: #020617;
+            --color-surface-light: #FFFFFF;
+            --color-surface-dark: #111827;
+            --color-surface-dark-alt: #0B1120;
+            --color-text-light: #020617;
+            --color-text-light-secondary: #475569;
+            --color-text-dark: #F9FAFB;
+            --color-text-dark-secondary: #9CA3AF;
+            --color-primary: #6366F1;
+            --color-accent: #22D3EE;
+            --color-accent-hover: #06B6D4;
+            --transition-fast: 200ms ease-in-out;
+            --transition-smooth: 400ms ease-in-out;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--color-bg-light);
+            color: var(--color-text-light);
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-dark);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            background: rgba(249, 250, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all var(--transition-smooth);
+        }
+
+        body.dark-mode .navbar {
+            background: rgba(2, 6, 23, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366F1, #22D3EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--color-text-light-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color var(--transition-fast);
+            position: relative;
+        }
+
+        body.dark-mode .nav-menu a {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-primary);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #E5E7EB;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color var(--transition-smooth);
+            border: none;
+            padding: 0;
+        }
+
+        body.dark-mode .toggle-switch {
+            background: #475569;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left var(--transition-smooth);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .toggle-switch::before {
+            left: 26px;
+        }
+
+        .toggle-switch:hover {
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .cta-button {
+            padding: 0.7rem 1.5rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 0.95rem;
+        }
+
+        .cta-button:hover {
+            background: #5558E3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Sections Spacing */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 3rem 1.5rem;
+            }
+            .nav-menu {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, transparent, rgba(99, 102, 241, 0.05));
+        }
+
+        body.dark-mode .hero {
+            background: linear-gradient(135deg, transparent, rgba(99, 102, 241, 0.1));
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .hero-shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #6366F1, #22D3EE);
+            top: -100px;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #22D3EE, #6366F1);
+            bottom: 50px;
+            left: 5%;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--color-text-light-secondary);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .hero p {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary:hover {
+            background: #5558E3;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* About Section */
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .about p {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-light-secondary);
+        }
+
+        body.dark-mode .about p {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .value-points {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .value-point {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--color-surface-light);
+            border-radius: 10px;
+            border-left: 4px solid var(--color-primary);
+            transition: all var(--transition-fast);
+        }
+
+        body.dark-mode .value-point {
+            background: var(--color-surface-dark);
+        }
+
+        .value-point:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .value-icon {
+            font-size: 1.5rem;
+            min-width: 40px;
+        }
+
+        .value-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-text p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--color-surface-light);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all var(--transition-smooth);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .service-card {
+            background: var(--color-surface-dark);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-smooth);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px rgba(99, 102, 241, 0.2);
+            border-color: var(--color-primary);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: var(--color-text-light-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .service-card p {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .price-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366F1, #22D3EE);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-cta {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all var(--transition-fast);
+            font-size: 0.95rem;
+        }
+
+        .service-cta:hover {
+            background: #5558E3;
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Process Section */
+        .process-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .process-step {
+            position: relative;
+            text-align: center;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #6366F1, #22D3EE);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .process-step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .process-step p {
+            font-size: 0.95rem;
+            color: var(--color-text-light-secondary);
+            line-height: 1.6;
+        }
+
+        body.dark-mode .process-step p {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .connector {
+            position: absolute;
+            top: 40px;
+            left: 100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-primary), transparent);
+        }
+
+        .process-step:last-child .connector {
+            display: none;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            font-size: 1rem;
+            color: var(--color-text-light-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .contact-info p {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .contact-methods {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-method {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .contact-method-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6366F1, #22D3EE);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .contact-method-info h3 {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-method-info a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .contact-method-info a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: var(--color-surface-light);
+            padding: 2.5rem;
+            border-radius: 12px;
+            transition: all var(--transition-smooth);
+        }
+
+        body.dark-mode .contact-form {
+            background: var(--color-surface-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: white;
+            color: var(--color-text-light);
+            transition: all var(--transition-fast);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background: var(--color-surface-dark-alt);
+            border-color: #1F2937;
+            color: var(--color-text-dark);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366F1, #5558E3);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(99, 102, 241, 0.4);
+        }
+
+        .form-success {
+            display: none;
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #10B981;
+        }
+
+        .form-success.show {
+            display: block;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-surface-light);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+            transition: all var(--transition-smooth);
+        }
+
+        body.dark-mode footer {
+            background: var(--color-surface-dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: var(--color-text-light-secondary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        body.dark-mode .footer-section a {
+            color: var(--color-text-dark-secondary);
+        }
+
+        .footer-section a:hover {
+            color: var(--color-primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            font-size: 1.2rem;
+        }
+
+        .social-link:hover {
+            background: var(--color-accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--color-text-light-secondary);
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .footer-bottom {
+            border-top-color: rgba(255, 255, 255, 0.08);
+            color: var(--color-text-dark-secondary);
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero {
+                padding: 4rem 1.5rem;
+                margin-top: 70px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .about,
+            .contact-section {
+                grid-template-columns: 1fr;
+            }
+
+            .process-timeline {
+                grid-template-columns: 1fr;
+            }
+
+            .connector {
+                display: none;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">Hasher Sync</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#process">How It Works</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="theme-toggle-wrapper">
+                <button class="toggle-switch" id="themeToggle" title="Toggle Dark Mode"></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <div class="hero-shape shape-1"></div>
+            <div class="hero-shape shape-2"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Digital Solutions & Automation for Modern Businesses</h1>
+            <p>Transform your vision into reality with Hasher Sync. We build websites, AI agents, funnels, and marketing systems that drive real results. Affordable. Fast. Conversion-focused.</p>
+            <div class="hero-cta">
+                <button class="btn-primary" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">View Services & Pricing</button>
+                <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Let's Work Together</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about fade-in" id="about">
+        <div>
+            <h2>About Hasher Sync</h2>
+            <p>We're a lean, efficient digital agency that specializes in building automated, scalable solutions for startups, small businesses, and creators. We don't just build websites—we build systems that work for you 24/7.</p>
+            <p>Our focus? <strong>Your growth.</strong> We combine strategy, design, and automation to deliver results that matter.</p>
+        </div>
+        <div>
+            <div class="value-points">
+                <div class="value-point">
+                    <span class="value-icon">⚡</span>
+                    <div class="value-text">
+                        <h3>Fast Delivery</h3>
+                        <p>Projects completed in days, not months. We move fast without sacrificing quality.</p>
+                    </div>
+                </div>
+                <div class="value-point">
+                    <span class="value-icon">💰</span>
+                    <div class="value-text">
+                        <h3>Affordable Pricing</h3>
+                        <p>Premium quality at rates startups and small businesses can actually afford. ₹5K–₹90K range.</p>
+                    </div>
+                </div>
+                <div class="value-point">
+                    <span class="value-icon">🎯</span>
+                    <div class="value-text">
+                        <h3>Conversion-Focused</h3>
+                        <p>Every pixel, every feature, every interaction is designed to drive sales and leads.</p>
+                    </div>
+                </div>
+                <div class="value-point">
+                    <span class="value-icon">🔄</span>
+                    <div class="value-text">
+                        <h3>Scalable Systems</h3>
+                        <p>Start small, grow big. Our solutions scale with your business from day one.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="fade-in">
+        <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 1rem;">Our Services</h2>
+        <p style="text-align: center; color: var(--color-text-light-secondary); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">Comprehensive digital solutions tailored to your business needs. Choose the services you need or let us build a custom package.</p>
+        <div class="services-grid">
+            <!-- Service Cards -->
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h3>Website Set-up</h3>
+                <p>Full website creation and setup from scratch. Responsive, fast, and SEO-ready.</p>
+                <div class="price-tag">₹15,000–₹50,000</div>
+                <button class="service-cta" onclick="scrollToContact('Website Set-up')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🔍</div>
+                <h3>SEO/AEO</h3>
+                <p>Boost your visibility on search engines and AI assistants. Strategy + optimization included.</p>
+                <div class="price-tag">₹10,000–₹40,000</div>
+                <button class="service-cta" onclick="scrollToContact('SEO/AEO')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Market & Content Research</h3>
+                <p>Data-driven insights and research-backed content strategy to guide your marketing.</p>
+                <div class="price-tag">₹8,000–₹30,000</div>
+                <button class="service-cta" onclick="scrollToContact('Market & Content Research')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📈</div>
+                <h3>Funneling</h3>
+                <p>Sales funnel design, landing pages, and automation to turn visitors into customers.</p>
+                <div class="price-tag">₹12,000–₹45,000</div>
+                <button class="service-cta" onclick="scrollToContact('Funneling')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3>AI Agent Set-up</h3>
+                <p>Custom AI assistants for support, lead generation, and business automation.</p>
+                <div class="price-tag">₹20,000–₹90,000</div>
+                <button class="service-cta" onclick="scrollToContact('AI Agent Set-up')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📢</div>
+                <h3>Ads Management</h3>
+                <p>Campaign strategy, targeting, and optimization across all major platforms.</p>
+                <div class="price-tag">₹5,000–₹35,000</div>
+                <button class="service-cta" onclick="scrollToContact('Ads Management')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🛒</div>
+                <h3>E-Commerce Set-up</h3>
+                <p>Full online store setup, product pages, and payment integration ready to sell.</p>
+                <div class="price-tag">₹18,000–₹60,000</div>
+                <button class="service-cta" onclick="scrollToContact('E-Commerce Set-up')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Designing</h3>
+                <p>Brand identity, UI/UX, and graphic design for all your digital assets.</p>
+                <div class="price-tag">₹8,000–₹35,000</div>
+                <button class="service-cta" onclick="scrollToContact('Designing')">Enquire Now</button>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">💬</div>
+                <h3>Discord Server Set-up</h3>
+                <p>Professional server structure, roles, channels, and basic automations.</p>
+                <div class="price-tag">₹5,000–₹20,000</div>
+                <button class="service-cta" onclick="scrollToContact('Discord Server Set-up')">Enquire Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="fade-in">
+        <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 1rem;">How We Work</h2>
+        <p style="text-align: center; color: var(--color-text-light-secondary); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">Our streamlined process ensures clarity, speed, and exceptional results at every step.</p>
+        <div class="process-timeline">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <h3>Contact & Brief</h3>
+                <p>You reach out, we listen. We understand your needs, goals, and budget in detail.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <h3>Strategy & Planning</h3>
+                <p>We create a roadmap. Design concepts, feature list, timeline, and deliverables are locked in.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <h3>Build & Design</h3>
+                <p>Our team builds and designs your project. Regular updates keep you in the loop.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <h3>Launch & Support</h3>
+                <p>Go live with confidence. We provide post-launch support and optimization.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="fade-in">
+        <div class="contact-section">
+            <div class="contact-info">
+                <h2>Let's Build Something Great</h2>
+                <p>Whether you have a quick question or you're ready to start your project, we're here to help. Get in touch, and let's explore how Hasher Sync can drive your business forward.</p>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="contact-method-icon">✉️</div>
+                        <div class="contact-method-info">
+                            <h3>Email</h3>
+                            <a href="mailto:hello@hashersync.com">hello@hashersync.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">💬</div>
+                        <div class="contact-method-info">
+                            <h3>WhatsApp</h3>
+                            <a href="https://wa.me/919876543210?text=Hello%20Hasher%20Sync!%20I%20want%20to%20discuss%20my%20project." target="_blank">+91 98765 43210</a>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">🎮</div>
+                        <div class="contact-method-info">
+                            <h3>Discord</h3>
+                            <a href="https://discord.gg/hashersync" target="_blank">Join Our Server</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <div class="form-success" id="formSuccess">✓ Message sent successfully! We'll get back to you soon.</div>
+                <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Interested In *</label>
+                        <select id="service" name="service" required>
+                            <option value="">Select a service</option>
+                            <option value="Website Set-up">Website Set-up</option>
+                            <option value="SEO/AEO">SEO/AEO</option>
+                            <option value="Market & Content Research">Market & Content Research</option>
+                            <option value="Funneling">Funneling</option>
+                            <option value="AI Agent Set-up">AI Agent Set-up</option>
+                            <option value="Ads Management">Ads Management</option>
+                            <option value="E-Commerce Set-up">E-Commerce Set-up</option>
+                            <option value="Designing">Designing</option>
+                            <option value="Discord Server Set-up">Discord Server Set-up</option>
+                            <option value="Custom Package">Custom Package</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget Range *</label>
+                        <select id="budget" name="budget" required>
+                            <option value="">Select a range</option>
+                            <option value="₹5,000–₹15,000">₹5,000–₹15,000</option>
+                            <option value="₹15,000–₹30,000">₹15,000–₹30,000</option>
+                            <option value="₹30,000–₹60,000">₹30,000–₹60,000</option>
+                            <option value="₹60,000+">₹60,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Tell Us About Your Project *</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message & Get Quote</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Hasher Sync</h4>
+                <p>Digital solutions & automation agency building scalable systems for modern businesses.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com" class="social-link" target="_blank">📱</a>
+                    <a href="https://twitter.com" class="social-link" target="_blank">𝕏</a>
+                    <a href="https://linkedin.com" class="social-link" target="_blank">💼</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#services">Website Design</a></li>
+                    <li><a href="#services">SEO/AEO</a></li>
+                    <li><a href="#services">AI Agents</a></li>
+                    <li><a href="#services">Ads Management</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:hello@hashersync.com">hello@hashersync.com</a></li>
+                    <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Hasher Sync. All rights reserved. Built with ✨ for growth.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check localStorage for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const service = document.getElementById('service').value;
+            const budget = document.getElementById('budget').value;
+            const message = document.getElementById('message').value;
+
+            // Encode message for WhatsApp
+            const whatsappMessage = `Hi Hasher Sync!%0A%0AI'm interested in ${service}%0A%0AName: ${name}%0AEmail: ${email}%0ABudget: ${budget}%0A%0AProject Details:%0A${message}`;
+
+            // Open WhatsApp
+            window.open(`https://wa.me/919876543210?text=${whatsappMessage}`, '_blank');
+
+            // Show success message
+            const formSuccess = document.getElementById('formSuccess');
+            formSuccess.classList.add('show');
+
+            // Reset form
+            document.getElementById('contactForm').reset();
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                formSuccess.classList.remove('show');
+            }, 5000);
+        }
+
+        // Scroll to contact and prefill service
+        function scrollToContact(service) {
+            document.getElementById('service').value = service;
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
